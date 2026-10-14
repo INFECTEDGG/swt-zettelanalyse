@@ -1,96 +1,105 @@
-# Zettelanalyse
+# Projektauftrag – Zettelanalyse
+
+## Projektname
+
+**Zettelanalyse**
 
 ---
 
-## Voraussetzungen zur Nutzung
-## Installationsanleitung
+## Kurzbeschreibung des Vorhabens
 
-Zettelanalyse ist als Web-App gedacht. Die Installation und Nutzung ist nicht an ein bestimmtes Betriebssystem gebunden. Prüfen Sie vor der Installation und Nutzung folgende Punkte:
+Zettelanalyse ist eine in **Go** entwickelte Webanwendung, die das Schreibverhalten im Zettelstore auswertet und grafisch darstellt, ähnlich wie die Bildschirmzeit auf dem Smartphone.
 
-- Eine Zettelstore-Instanz (Version 2.0) muss unter `http://localhost:23123` erreichbar sein. Die Installationsanleitung finden Sie unter https://zettelstore.de/manual/h/00001003000000
-- Python 3.10 oder neuer muss installiert sein
+Die Anwendung liest die Zettel über die **REST-API des Zettelstores** aus und zeigt in Diagrammen:
+
+- an welchen Tagen,
+- in welchen Wochen und
+- in welchen Monaten
+
+wie viele Zettel erstellt wurden.
+
+Per Klick auf einen Zeitraum werden die dort erstellten Zettel aufgelistet.
+
+Zusätzlich wird ausgewertet, welche Tags (z. B. `#uni`, `#essen`) am häufigsten verwendet werden.
+
+Der Zettelstore speichert Wissen, bietet aber bisher keinen Überblick über das eigene Schreibverhalten. Man sieht nicht, wann man aktiv war, welche Themen einen besonders beschäftigen oder ob man regelmäßig am eigenen Zettelkasten arbeitet.
+
+**Zettelanalyse macht diese Informationen auf einen Blick sichtbar.**
 
 ---
 
-### Virtuelle Umgebung einrichten
+## Ziele
 
-Eine virtuelle Python-Umgebung erstellen und aktivieren:
+- Entwicklung einer Webanwendung in **Go** zur Analyse und Visualisierung von Zetteln
+- Anbindung an den Zettelstore über die **REST-API** (nur lesender Zugriff)
+- Darstellung der Anzahl erstellter Zettel pro **Tag, Woche und Monat** als Balkendiagramm
+- Detailansicht: Auflistung der Zettel eines ausgewählten Zeitraums per Klick
+- Auswertung und Darstellung der am häufigsten verwendeten **Tags**
+- Verbesserung des Überblicks über die eigene Wissenssammlung und das eigene Schreibverhalten
 
-**Linux / macOS:**
+---
 
-```
-python3 -m venv venv
-source venv/bin/activate
-```
+## Grob geschätzter Personal- und Zeitaufwand
 
-**Windows:**
+- **Teamgröße:** 9 Personen
+- **Entwicklungszeit:** 12 Wochen
+- **Arbeitsaufwand:** 20 Stunden pro Person
+- **Gesamtzeit:** 180 Stunden
 
-```
-py -m venv venv
-venv\Scripts\activate
-```
+---
 
-### Abhängigkeiten installieren
+## Grobe Kostenschätzung
 
-Im obersten Verzeichnis des Repositorys:
+- Keine direkten finanziellen Kosten
+- Nutzung vorhandener Software und Hardware:
+  - Go
+  - VS Code
+  - Zettelstore
+  - GitHub
+- Hauptaufwand liegt in der Entwicklungszeit
 
-```bash
-python -m pip install -r requirements.txt
-python -m pip install -e .
-```
+---
 
-Damit wird Zettelanalyse in der virtuellen Umgebung installiert.
+## Wichtige Meilensteine (inkl. Endtermin)
 
-## Befehle
+### M1 – Definition der Anforderungen und Architektur
 
-Für diese Anleitung wird vorausgesetzt, dass das Repository bereits geklont oder als ZIP-Datei entpackt wurde. Außerdem wird vorausgesetzt, dass Python 3.10 oder neuer in einer aktivierten virtuellen Umgebung verfügbar ist und Zettelstore 2.0 unter `http://localhost:23123` läuft.
+Definition der funktionalen und nicht-funktionalen Anforderungen sowie Festlegung der grundlegenden Softwarearchitektur.
 
-### Funktionsumfang von Version 0.1.0
+### M2 – Anbindung an den Zettelstore
 
-Version 1.0.0 unterstützt ...
+Abruf der Zettel und Metadaten über die Zettelstore-API.
 
-## Projektauftrag: ZSConfig
+### M3 – Auswertungslogik
 
-### Kurzbeschreibung
-Zettelanalyse ist eine Web-App, die im Rahmen der Veranstaltung Softwaretechnik und mobile Systeme (282130) von einer Gruppe, die aus 9 Personen besteht, entwickelt wird. Ziel dieses Projekts ist es ...
-Dazu liest Zettelanalyse gezielt Metadaten aus Zetteln innerhalb des Zettelstores, insbesondere die Creation Time und Update Time, in dem die Erstellungs- und Bearbeitungszeit geschrieben steht.
+Implementierung der Logik zur:
 
-### Problemstellung
+- Gruppierung der Zettel nach Tag
+- Gruppierung der Zettel nach Woche
+- Gruppierung der Zettel nach Monat
+- Auswertung und Zählung der verwendeten Tags
+
+### M4 – Visualisierung
+
+Darstellung der Ergebnisse als **Balkendiagramm** inklusive Detailansicht der Zettel eines ausgewählten Zeitraums.
+
+### M5 – Tag-Auswertung
+
+Erweiterung der Anwendung um die Auswertung der verwendeten Tags.
+
+### M6 – Test und Fehlerbehebung
+
+Testen der Anwendung und Behebung identifizierter Fehler.
+
+### M7 – Abschlusspräsentation und Abgabe
+
+**Abgabe:** 13.01.2027
 
 
+---
 
-### Ziele
-Das übergeordnete Ziel von Zettelanalyse ist es...
-Im Einzelnen verfolgt das Projekt folgende Ziele:
+## Unterschriften
 
+**Projektteam:** Maximilian Stephan (223702), Bao Tram Ngo Thi (223165), Joshua Späth (222908), Bernadeta Mesulaj (218884), Dijar Temizkan (227604), Louis Sämann (223519), Leon Lawrence (207272), Naelo Mbonu (225007), Mantas Balciünas (226774).
 
-
-### Projektzeitplan
-Das Projekt umfasst insgesamt 60 ((5ects x 30std) x 0,4 Noten prozent) reine Arbeitsstunden pro Gruppenmitglied. Diese werden in folgende Phasen eingeteilt:
-
-- **Phase 1: Einarbeitung in Zettelstore & API (~8h)**
-Studium des Manuals, Verstehen der Konfigurations-Zettel-Struktur und der verfügbaren Schnittstellen.
-
-- **Phase 2: Anforderungsanalyse & Projektplanung (~8h)**
-Festlegung der Funktionen, Schnittstellen zum Zettelstore und Aufgabenverteilung im Team.
-
-- **Phase 3: Architektur & Design (~6h)**
-Entwurf der CLI-Struktur, Subcommands, Fehlerbehandlung und Ausgabeformate.
-
-- **Phase 4: Implementierung (~22h)**
-Umsetzung der einzelnen Funktionen: globale Konfigurationen, User-Zettel, Validierung, JSON-Ausgabe
-
-- **Phase 5: Testen & Qualitätssicherung (~10h)**
-Unit-Tests, manuelle Tests gegen eine laufende Zettelstore-Instanz, Bugfixing.
-
-- **Phase 6: Dokumentation (~6h)**
-README, Benutzerhandbuch, Abschlusspräsentation.
-
-### Risikoreflexionen
-Bei der Entwicklung von Zettelanalyse, wurde von der Gruppe folgende potenzielle Risiken erkannt und definiert, die den Projekterfolg beeinflussen und/oder beeinträchtigen könnten:
-
-- **Unvollständige oder unklare Dokumentation des Zettelstores:** Das Projekt stützt sich stark auf das Zettelstore-Manual. Sollten bestimmte Konfigurationsoptionen unzureichend dokumentiert oder undokumentiert sein, kann die Implementierung einzelner Features aufwändiger als geplant werden. Maßnahme: Frühzeitige intensive Einarbeitung ins Manual und direktes Testen gegen eine laufende Instanz.
-
-- **Koordinationsaufwand in der Gruppe mit 9 Personen:** Mit neun Beteiligten steigt das Risiko von Kommunikationsproblemen, doppelter Arbeit oder inkonsistenter Codebasis. Maßnahme: Klare Aufgabenteilung, gemeinsame Coding-Konventionen und regelmäßiger kurze Abstimmungen (Im Labor).
-
-- **Zeitliche Engpässe durch parallele Lehrveranstaltung:** Als Studierende haben alle Teammitglieder weitere Verpflichtungen, was zu Verzögerungen bei einzelnen Liefergegenstände führen kann. Maßnahme: Pufferzeit im Zeitplan einplanen und kritische Liefergegenstände (Implementierung, Tests) priorisieren.
+**Datum:** 14.10.2026

@@ -1,11 +1,5 @@
 # Projektauftrag – Zettelanalyse
 
-## Projektname
-
-**Zettelanalyse**
-
----
-
 ## Kurzbeschreibung des Vorhabens
 
 Zettelanalyse ist eine in **Go** entwickelte Webanwendung, die das Schreibverhalten im Zettelstore auswertet und grafisch darstellt, ähnlich wie die Bildschirmzeit auf dem Smartphone.

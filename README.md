@@ -20,7 +20,7 @@ Der Zettelstore speichert Wissen, bietet aber bisher keinen Überblick über das
 
 - Entwicklung einer Webanwendung in **Go** zur Analyse und Visualisierung von Zetteln
 - Anbindung an den Zettelstore über die **REST-API** (nur lesender Zugriff)
-- Darstellung der Anzahl erstellter Zettel pro **Monat** als Balkendiagramm
+- Darstellung der Anzahl erstellter Zettel pro **Monat** als Säulendiagramm
 - Detailansicht: Auflistung der Zettel eines ausgewählten Zeitraums per Klick
 - Auswertung und Darstellung der am häufigsten verwendeten **Tags**
 - Verbesserung des Überblicks über die eigene Wissenssammlung und das eigene Schreibverhalten
@@ -67,7 +67,7 @@ Implementierung der Logik zur:
 
 ### M4 – Visualisierung
 
-Darstellung der Ergebnisse als **Balkendiagramm** inklusive Detailansicht der Zettel eines ausgewählten Zeitraums.
+Darstellung der Ergebnisse als **Säulendiagramm** inklusive Detailansicht der Zettel eines ausgewählten Zeitraums.
 
 ### M5 – Tag-Auswertung
 

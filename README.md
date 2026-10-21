@@ -87,6 +87,18 @@ Testen der Anwendung und Behebung identifizierter Fehler.
 
 ### M7 – Abschlusspräsentation und Abgabe
 
+---
+
+## Risikoreflexion
+
+- **Abstimmungsprobleme im Team (9 Personen):** klare Aufgabenverteilung über Issues und regelmäßige kurze Abstimmungen
+- **Lizenzkonflikt mit dem Zettelstore-Client (EUPL-1.2):** Projektlizenz passend wählen oder API ohne Client ansprechen
+- **Fehlerhafte Statistik durch Sonderfälle (Systemzettel, Zeitzonen):** Sonderfälle mit Unit-Tests absichern
+- **Erweiterung des Projektumfangs:** erst Kernfunktionen fertigstellen, Nicht-Anforderungen als Grenze nutzen
+- **Zeitdruck vor der Abgabe am 13.01.2027:** funktionsfähige Version bis Mitte Dezember
+
+---
+
 **Abgabe:** 13.01.2027
 
 

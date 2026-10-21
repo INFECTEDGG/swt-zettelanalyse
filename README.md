@@ -4,13 +4,7 @@
 
 Zettelanalyse ist eine in **Go** entwickelte Webanwendung, die das Schreibverhalten im Zettelstore auswertet und grafisch darstellt, ähnlich wie die Bildschirmzeit auf dem Smartphone.
 
-Die Anwendung liest die Zettel über die **REST-API des Zettelstores** aus und zeigt in Diagrammen:
-
-- an welchen Tagen,
-- in welchen Wochen und
-- in welchen Monaten
-
-wie viele Zettel erstellt wurden.
+Die Anwendung liest die Zettel über die **REST-API des Zettelstores** aus und zeigt in Diagrammen, in welchen Monaten wie viele Zettel erstellt wurden.
 
 Per Klick auf einen Zeitraum werden die dort erstellten Zettel aufgelistet.
 
@@ -26,7 +20,7 @@ Der Zettelstore speichert Wissen, bietet aber bisher keinen Überblick über das
 
 - Entwicklung einer Webanwendung in **Go** zur Analyse und Visualisierung von Zetteln
 - Anbindung an den Zettelstore über die **REST-API** (nur lesender Zugriff)
-- Darstellung der Anzahl erstellter Zettel pro **Tag, Woche und Monat** als Balkendiagramm
+- Darstellung der Anzahl erstellter Zettel pro **Monat** als Balkendiagramm
 - Detailansicht: Auflistung der Zettel eines ausgewählten Zeitraums per Klick
 - Auswertung und Darstellung der am häufigsten verwendeten **Tags**
 - Verbesserung des Überblicks über die eigene Wissenssammlung und das eigene Schreibverhalten
@@ -68,8 +62,6 @@ Abruf der Zettel und Metadaten über die Zettelstore-API.
 
 Implementierung der Logik zur:
 
-- Gruppierung der Zettel nach Tag
-- Gruppierung der Zettel nach Woche
 - Gruppierung der Zettel nach Monat
 - Auswertung und Zählung der verwendeten Tags
 
@@ -87,20 +79,19 @@ Testen der Anwendung und Behebung identifizierter Fehler.
 
 ### M7 – Abschlusspräsentation und Abgabe
 
+
+**Abgabe:** 13.01.2027
+
+
 ---
 
 ## Risikoreflexion
 
 - **Abstimmungsprobleme im Team (9 Personen):** klare Aufgabenverteilung über Issues und regelmäßige kurze Abstimmungen
-- **Lizenzkonflikt mit dem Zettelstore-Client (EUPL-1.2):** Projektlizenz passend wählen oder API ohne Client ansprechen
+- **Lizenzkonflikt mit dem Zettelstore-Client (EUPL-1.2):** Projekt steht unter EUPL-1.2, Client wird nur in der Datenschicht eingebunden
 - **Fehlerhafte Statistik durch Sonderfälle (Systemzettel, Zeitzonen):** Sonderfälle mit Unit-Tests absichern
 - **Erweiterung des Projektumfangs:** erst Kernfunktionen fertigstellen, Nicht-Anforderungen als Grenze nutzen
 - **Zeitdruck vor der Abgabe am 13.01.2027:** funktionsfähige Version bis Mitte Dezember
-
----
-
-**Abgabe:** 13.01.2027
-
 
 ---
 

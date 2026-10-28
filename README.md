@@ -2,7 +2,7 @@
 
 ## Kurzbeschreibung des Vorhabens
 
-Zettelanalyse ist eine in **Go** entwickelte Webanwendung, die das Schreibverhalten im Zettelstore auswertet und grafisch darstellt, ähnlich wie die Bildschirmzeit auf dem Smartphone.
+Zettelanalyse ist eine in **Go** entwickelte Anwendung, die das Schreibverhalten im Zettelstore auswertet und grafisch darstellt, ähnlich wie die Bildschirmzeit auf dem Smartphone.
 
 Die Anwendung liest die Zettel über die **REST-API des Zettelstores** aus und zeigt in Diagrammen, in welchen Monaten wie viele Zettel erstellt wurden.
 
@@ -18,7 +18,7 @@ Der Zettelstore speichert Wissen, bietet aber bisher keinen Überblick über das
 
 ## Ziele
 
-- Entwicklung einer Webanwendung in **Go** zur Analyse und Visualisierung von Zetteln
+- Entwicklung einer Anwendung in **Go** zur Analyse und Visualisierung von Zetteln
 - Anbindung an den Zettelstore über die **REST-API** (nur lesender Zugriff)
 - Darstellung der Anzahl erstellter Zettel pro **Monat** als Säulendiagramm
 - Detailansicht: Auflistung der Zettel eines ausgewählten Zeitraums per Klick

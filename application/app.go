@@ -15,7 +15,7 @@ func LadeZettel(q ZettelQuelle) ([]model.Zettel, error) {
 	}
 	var ergebnis []model.Zettel
 	for _, z := range alle {
-		if !IstSystemzettel(z.id) {
+		if !IstSystemzettel(z.ID) {
 			ergebnis = append(ergebnis, z)
 		}
 	}

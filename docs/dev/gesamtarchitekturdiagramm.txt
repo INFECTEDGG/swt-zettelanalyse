@@ -1,0 +1,102 @@
+                              ┌─────────────────────┐
+                              │      Benutzer       │
+                              └──────────┬──────────┘
+                                         │
+                                         │ bedient
+                                         ▼
+┌────────────────────────────────────────────────────────────────────────────┐
+│                        ZETTELANALYSE                                      │
+│                   Native Go-Desktop-Anwendung                             │
+│                                                                            │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │  «package» gui                                                       │  │
+│  │  PRÄSENTATIONSSCHICHT                                                │  │
+│  │                                                                      │  │
+│  │  ┌──────────────────┐ ┌──────────────────┐ ┌───────────────────────┐ │  │
+│  │  │ Fenster          │ │ Diagramm         │ │ Bedienelemente        │ │  │
+│  │  │ window.go        │ │ chart.go         │ │ controls.go           │ │  │
+│  │  ├──────────────────┤ ├──────────────────┤ ├───────────────────────┤ │  │
+│  │  │ Hauptfenster     │ │ Monatsdiagramm   │ │ Zettelstore-Adresse   │ │  │
+│  │  │ Fehleranzeige    │ │ Balken auswählen │ │ Jahresauswahl         │ │  │
+│  │  │ Listen anzeigen  │ │                  │ │ Aktualisieren         │ │  │
+│  │  └──────────────────┘ └──────────────────┘ └───────────────────────┘ │  │
+│  │                                                                      │  │
+│  │                Externe Bibliothek: modernc.org/tk9.0                 │  │
+│  └─────────────────────────────────┬────────────────────────────────────┘  │
+│                                    │                                       │
+│                                    │ verwendet Dienst                     │
+│                                    ▼                                       │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │  «package» application                                               │  │
+│  │  ANWENDUNGSSCHICHT                                                   │  │
+│  │                                                                      │  │
+│  │  ┌────────────────────────────────────────────────────────────────┐  │  │
+│  │  │ Dienst (service.go)                                             │  │  │
+│  │  │                                                                │  │  │
+│  │  │ + Uebersicht(jahr, monat)                                       │  │  │
+│  │  │ + Monatsstatistik(jahr)                                        │  │  │
+│  │  │ + TopTags(jahr)                                                │  │  │
+│  │  │ + ZettelDesMonats(jahr, monat)                                 │  │  │
+│  │  └───────────────────────────────┬────────────────────────────────┘  │  │
+│  │                                  │                                   │  │
+│  │      ┌───────────────────────────┼─────────────────────────────┐     │  │
+│  │      ▼                           ▼                             ▼     │  │
+│  │  ┌────────────────┐   ┌────────────────┐   ┌──────────────────┐ │     │  │
+│  │  │ statistics.go  │   │ tags.go        │   │ month_filter.go  │ │     │  │
+│  │  │                │   │                │   │                  │ │     │  │
+│  │  │ Monatsanzahl   │   │ Tag-Häufigkeit │   │ Monatsfilter     │ │     │  │
+│  │  │ Aktivster Monat│   │ Top-Tags       │   │ Zettelauswahl    │ │     │  │
+│  │  └────────────────┘   └────────────────┘   └──────────────────┘ │     │  │
+│  │                                                                      │  │
+│  │  ┌────────────────────────────────────────────────────────────────┐  │  │
+│  │  │ «interface» ZettelQuelle (source.go)                           │  │  │
+│  │  │ + AlleZettel(ctx) : []Zettel, error                            │  │  │
+│  │  └───────────────────────────────△────────────────────────────────┘  │  │
+│  └──────────────────────────────────┆───────────────────────────────────┘  │
+│                                     ┆                                      │
+│                                     ┆ implementiert                        │
+│                                     ┆                                      │
+│  ┌──────────────────────────────────┴───────────────────────────────────┐  │
+│  │  «package» data                                                      │  │
+│  │  DATENZUGRIFFSSCHICHT                                                │  │
+│  │                                                                      │  │
+│  │  ┌────────────────────────────────────────────────────────────────┐  │  │
+│  │  │ ZettelstoreClient (zettelstore_client.go)                       │  │  │
+│  │  │                                                                │  │  │
+│  │  │ + AlleZettel(ctx) : []Zettel, error                            │  │  │
+│  │  │ - baseURL: string                                              │  │  │
+│  │  │ - httpClient: *http.Client                                     │  │  │
+│  │  └───────────────────────────────┬────────────────────────────────┘  │  │
+│  └──────────────────────────────────┼───────────────────────────────────┘  │
+│                                     │                                      │
+│  ┌──────────────────────────────────┴───────────────────────────────────┐  │
+│  │  «package» model                                                     │  │
+│  │  GEMEINSAME DATENSTRUKTUREN                                          │  │
+│  │                                                                      │  │
+│  │    Zettel          Uebersicht          JahrMonat        TagAnzahl     │  │
+│  │                                                                      │  │
+│  │    ID              Jahr               Jahr             Tag          │  │
+│  │    Titel           ProMonat           Monat            Anzahl       │  │
+│  │    Erstellt        AktivsterMonat     Anzahl                        │  │
+│  │    Tags            ZettelImMonat                                    │  │
+│  │                    HaeufigsteTags                                    │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                                                            │
+└─────────────────────────────────────┬──────────────────────────────────────┘
+                                      │
+                                      │ HTTP-API (nur lesend)
+                                      │ 127.0.0.1:23123
+                                      ▼
+                          ┌────────────────────────┐
+                          │      Zettelstore       │
+                          │                        │
+                          │   Lokaler REST-Dienst  │
+                          └────────────┬───────────┘
+                                       │
+                                       │ Dateisystemzugriff
+                                       ▼
+                          ┌────────────────────────┐
+                          │   Zettel-Verzeichnis   │
+                          │                        │
+                          │   Lokale Zetteldateien │
+                          └────────────────────────┘

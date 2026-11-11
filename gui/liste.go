@@ -1,48 +1,37 @@
-package window
+// Package gui enthält das Programmfenster. Nur dieses Paket importiert tk9.0 (ADR 01).
+package gui
 
 import (
-	//Go Standardbibliothek für Hilfsfunktionen Texte
+	"fmt"
 	"strings"
 
-	//TK Bibliothek für Fenster und GUI Elemente
+	"Zettelanalyse/application"
+
 	. "modernc.org/tk9.0"
 )
 
-// Platzhalter für zettel weil noch kein api gemacht
-
-type Zettel struct {
-	Titel string
-	Tags  []string
-}
-
-// Beispiel Zettel mit Inhalt
-var placeholder = []Zettel{
-	{"Projektauftrag Zettelanalyse", []string{"#uni", "#swt"}},
-	{"Notizen zur Vorlesung", []string{"#uni"}},
-	{"Rezept Linsencurry", []string{"#essen", "#rezept"}},
-}
-
-// Öffnet das Fenster
-func StartWindow() {
-
-	//Window manager + initial Größe, Fenstereinstellungen
+// StartWindow öffnet das Fenster und zeigt die Zettel aus dem Zettelstore an.
+func StartWindow(quelle application.ZettelQuelle) {
 	App.WmTitle("Zettelanalyse")
 	WmGeometry(App, "1100x700")
-	table := TTreeview(Columns("title tags"), Show("headings"))
 
+	table := TTreeview(Columns("id title tags"), Show("headings"))
+	table.Heading("id", Txt("ID"))
 	table.Heading("title", Txt("Titel"))
 	table.Heading("tags", Txt("Tags"))
 
-	//geht die Platzhalterliste durch und fügt die Zettel in die Tabelle ein
-	for _, z := range placeholder {
-		tagText := strings.Join(z.Tags, " ")
-		table.Insert("", "end", Values([]string{z.Titel, tagText}))
+	// Zettel über die Anwendungslogik laden (ohne Systemzettel)
+	zettel, err := application.LadeZettel(quelle)
+	status := fmt.Sprintf("%d Zettel geladen", len(zettel))
+	if err != nil {
+		status = "Fehler: " + err.Error()
+	}
+	for _, z := range zettel {
+		table.Insert("", "end", Values([]string{z.ID, z.Title, strings.Join(z.Tags, " ")}))
 	}
 
-	//Packt die Tabelle in das Fenster und macht sie sichtbar
 	Pack(table, Expand(true), Fill("both"))
+	Pack(Label(Txt(status)), Anchor("w"), Padx("2m"), Pady("1m"))
 
-	//Startet die GUI und wartet auf Eingaben
-	App.Wait()
 	App.Center().Wait()
 }

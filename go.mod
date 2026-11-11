@@ -2,6 +2,8 @@ module Zettelanalyse
 
 go 1.27.1
 
+require modernc.org/tk9.0 v1.80.1
+
 require (
 	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
@@ -42,6 +44,5 @@ require (
 	modernc.org/sortutil v1.2.1 // indirect
 	modernc.org/strutil v1.2.1 // indirect
 	modernc.org/tcl9.0 v0.19.0 // indirect
-	modernc.org/tk9.0 v1.80.1 // indirect
 	modernc.org/token v1.1.0 // indirect
 )

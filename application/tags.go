@@ -7,34 +7,34 @@ import (
 	"Zettelanalyse/model"
 )
 
-// HaeufigsteTags zaehlt jeden Tag hoechstens einmal pro Zettel. Sortiert wird
-// absteigend nach Anzahl und bei Gleichstand alphabetisch nach Tag.
-func HaeufigsteTags(zettel []model.Zettel) []model.TagAnzahl {
-	zaehler := make(map[string]int)
-	for _, z := range zettel {
-		imZettel := make(map[string]struct{}, len(z.Tags))
-		for _, tag := range z.Tags {
+// MostFrequentTags counts each tag at most once per note. Results are sorted
+// by count in descending order and alphabetically when counts are equal.
+func MostFrequentTags(notes []model.Zettel) []model.TagCount {
+	counts := make(map[string]int)
+	for _, note := range notes {
+		seenTags := make(map[string]struct{}, len(note.Tags))
+		for _, tag := range note.Tags {
 			tag = strings.TrimSpace(tag)
 			if tag == "" {
 				continue
 			}
-			if _, vorhanden := imZettel[tag]; vorhanden {
+			if _, exists := seenTags[tag]; exists {
 				continue
 			}
-			imZettel[tag] = struct{}{}
-			zaehler[tag]++
+			seenTags[tag] = struct{}{}
+			counts[tag]++
 		}
 	}
 
-	ergebnis := make([]model.TagAnzahl, 0, len(zaehler))
-	for tag, anzahl := range zaehler {
-		ergebnis = append(ergebnis, model.TagAnzahl{Tag: tag, Anzahl: anzahl})
+	result := make([]model.TagCount, 0, len(counts))
+	for tag, count := range counts {
+		result = append(result, model.TagCount{Tag: tag, Count: count})
 	}
-	sort.Slice(ergebnis, func(i, j int) bool {
-		if ergebnis[i].Anzahl == ergebnis[j].Anzahl {
-			return ergebnis[i].Tag < ergebnis[j].Tag
+	sort.Slice(result, func(i, j int) bool {
+		if result[i].Count == result[j].Count {
+			return result[i].Tag < result[j].Tag
 		}
-		return ergebnis[i].Anzahl > ergebnis[j].Anzahl
+		return result[i].Count > result[j].Count
 	})
-	return ergebnis
+	return result
 }

@@ -9,8 +9,8 @@ type Zettel struct {
 	Modified string // Metadaten "modified": wann der Zettel zuletzt geändert wurde (leer, wenn nie geändert)
 }
 
-// TagAnzahl enthaelt einen Tag und die Anzahl der Zettel, die ihn verwenden.
-type TagAnzahl struct {
-	Tag    string
-	Anzahl int
+// TagCount contains a tag and the number of notes that use it.
+type TagCount struct {
+	Tag   string
+	Count int
 }

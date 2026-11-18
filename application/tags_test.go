@@ -7,19 +7,19 @@ import (
 	"Zettelanalyse/model"
 )
 
-func TestHaeufigsteTags(t *testing.T) {
-	zettel := []model.Zettel{
+func TestMostFrequentTags(t *testing.T) {
+	notes := []model.Zettel{
 		{Tags: []string{"#go", "#uni", "#go"}},
 		{Tags: []string{"#go", "#projekt"}},
 		{Tags: []string{"#uni"}},
 		{},
 	}
-	erwartet := []model.TagAnzahl{
-		{Tag: "#go", Anzahl: 2},
-		{Tag: "#uni", Anzahl: 2},
-		{Tag: "#projekt", Anzahl: 1},
+	expected := []model.TagCount{
+		{Tag: "#go", Count: 2},
+		{Tag: "#uni", Count: 2},
+		{Tag: "#projekt", Count: 1},
 	}
-	if erhalten := HaeufigsteTags(zettel); !reflect.DeepEqual(erhalten, erwartet) {
-		t.Fatalf("HaeufigsteTags() = %#v, erwartet %#v", erhalten, erwartet)
+	if actual := MostFrequentTags(notes); !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("MostFrequentTags() = %#v, expected %#v", actual, expected)
 	}
 }

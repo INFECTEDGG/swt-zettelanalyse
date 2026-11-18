@@ -63,7 +63,7 @@ func TestRealZettelstore(t *testing.T) {
 	}
 
 	t.Logf("Retrieved %d zettels", len(zettels))
-	for index, zettel := range zettels {
-		t.Logf("%3d. %s %s", index+1, zettel.ID, strings.TrimSpace(zettel.Title))
+	for index, note := range zettels {
+		t.Logf("%3d. %s %s", index+1, note.ID, strings.TrimSpace(note.Title))
 	}
 }

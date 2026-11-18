@@ -2,7 +2,10 @@ module Zettelanalyse
 
 go 1.27.1
 
-require modernc.org/tk9.0 v1.80.1
+require (
+	modernc.org/tk9.0 v1.80.1
+	t73f.de/r/zsc v0.0.0-20260925152639-3bcc14be9a87
+)
 
 require (
 	github.com/adrg/xdg v0.5.3 // indirect
@@ -45,4 +48,8 @@ require (
 	modernc.org/strutil v1.2.1 // indirect
 	modernc.org/tcl9.0 v0.19.0 // indirect
 	modernc.org/token v1.1.0 // indirect
+	t73f.de/r/sx v0.0.0-20260923105628-c3f50a0975e8 // indirect
+	t73f.de/r/webs v0.0.0-20260923105755-2313b1781e12 // indirect
+	t73f.de/r/zero v0.0.0-20260923105305-7225089c379e // indirect
+	t73f.de/r/zsx v0.0.0-20260923110036-6f36839f46c3 // indirect
 )

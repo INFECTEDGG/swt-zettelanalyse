@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 
+	"Zettelanalyse/application"
 	"Zettelanalyse/data"
 	"Zettelanalyse/gui"
 )
@@ -20,5 +21,7 @@ func main() {
 	source := data.NewZettelstoreClient(*address)
 
 	// Start the graphical user interface.
-	gui.StartWindow(source)
+	gui.StartWindow(source, *address, func(newAddress string) application.ZettelQuelle {
+		return data.NewZettelstoreClient(newAddress)
+	})
 }

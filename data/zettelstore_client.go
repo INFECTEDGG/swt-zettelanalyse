@@ -26,50 +26,33 @@ func NewZettelstoreClient(address string) *ZettelstoreClient {
 		panic(fmt.Errorf("invalid Zettelstore address: %w", err))
 	}
 
-	// Initialize the official ZSC client.
-	zscClient := client.NewClient(serverURL)
-
 	return &ZettelstoreClient{
-		client: zscClient,
+		client: client.NewClient(serverURL),
 	}
 }
 
-// GetZettel retrieves all zettel IDs and titles.
+// GetZettel retrieves all zettel IDs, titles, and tags.
 func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
-	ctx, cancel := context.WithTimeout(
-		context.Background(),
-		10*time.Second,
-	)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Retrieve zettel using the official ZSC client.
-	results, err := c.client.QueryZettel(ctx, "")
+	_, _, results, err := c.client.QueryZettelData(ctx, "")
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve zettel: %w", err)
 	}
 
-	var zettels []model.Zettel
-
-	// Convert the API response into application models.
+	zettels := make([]model.Zettel, 0, len(results))
 	for _, entry := range results {
-		line := strings.TrimSpace(string(entry))
-
-		if line == "" {
-			continue
-		}
-
-		parts := strings.SplitN(line, " ", 2)
-
-		id := parts[0]
-		title := id
-
-		if len(parts) == 2 {
-			title = strings.TrimSpace(parts[1])
+		id := entry.ID.String()
+		title := strings.TrimSpace(entry.Meta["title"])
+		if title == "" {
+			title = id
 		}
 
 		zettels = append(zettels, model.Zettel{
 			ID:    id,
 			Title: title,
+			Tags:  strings.Fields(entry.Meta["tags"]),
 		})
 	}
 

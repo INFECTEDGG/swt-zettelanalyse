@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -14,7 +16,8 @@ import (
 
 // ZettelstoreClient provides read-only access to the Zettelstore.
 type ZettelstoreClient struct {
-	client *client.Client
+	client  *client.Client
+	AbDatum string // nur Zettel ab diesem Datum (JJJJMMTT), leer = alle
 }
 
 // NewZettelstoreClient creates a client for the given server address.
@@ -36,7 +39,16 @@ func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	_, _, results, err := c.client.QueryZettelData(ctx, "")
+	// Datum aus der Temp-Datei lesen und als "created>" an die Query hängen
+	query := ""
+	dateien, _ := filepath.Glob(filepath.Join(os.TempDir(), "zettelanalyse*"))
+	for _, datei := range dateien {
+		inhalt, err := os.ReadFile(datei)
+		if err == nil && len(inhalt) > 0 {
+			query = "created>" + strings.TrimSpace(string(inhalt))
+		}
+	}
+	_, _, results, err := c.client.QueryZettelData(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve zettel list: %w", err)
 	}

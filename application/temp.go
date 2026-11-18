@@ -3,6 +3,7 @@ package application
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"Zettelanalyse/model"
 )
@@ -29,11 +30,8 @@ func Wtemp(q []model.Zettel) {
 		return
 	}
 
-	f, err := os.CreateTemp("", "zettelanalyse")
-	if err != nil {
-		panic(err)
-	}
+	path := filepath.Join(os.TempDir(), "zettelanalyse_last.txt")
+	err := os.WriteFile(path, []byte(latest.Modified), 0644)
 
-	_, err = f.Write([]byte(latest.Modified))
-
+	print(err)
 }

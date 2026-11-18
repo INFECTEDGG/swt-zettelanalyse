@@ -4,6 +4,7 @@ package gui
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"Zettelanalyse/application"
 
@@ -24,8 +25,12 @@ func StartWindow(source application.ZettelQuelle) {
 	tagTable.Heading("count", Txt("Anzahl"))
 
 	// Zettel über die Anwendungslogik laden (ohne Systemzettel)
+
 	zettels, err := application.LadeZettel(source)
-	status := fmt.Sprintf("%d Zettel geladen", len(zettels))
+    now := time.Now()
+    monthZettel := application.ZettelInMonth(zettels, now.Year(), int(now.Month()))
+    status := fmt.Sprintf("%d Zettel geladen, davon %d im %02d/%d", len(zettels), len(monthZettel), int(now.Month()), now.Year())
+
 	if err != nil {
 		status = "Fehler: " + err.Error()
 	}

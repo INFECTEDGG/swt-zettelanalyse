@@ -8,9 +8,3 @@ type Zettel struct {
 	Created  string // Metadaten "created": wann der Zettel erstellt wurde, z. B. 20251021093000
 	Modified string // Metadaten "modified": wann der Zettel zuletzt geändert wurde (leer, wenn nie geändert)
 }
-
-// TagCount contains a tag and the number of notes that use it.
-type TagCount struct {
-	Tag   string
-	Count int
-}

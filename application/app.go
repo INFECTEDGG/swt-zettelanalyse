@@ -19,6 +19,7 @@ func LadeZettel(q ZettelQuelle) ([]model.Zettel, error) {
 			ergebnis = append(ergebnis, z)
 		}
 	}
+	Wtemp(ergebnis)
 	return ergebnis, nil
 }
 

@@ -38,7 +38,7 @@ func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
 
 	_, _, results, err := c.client.QueryZettelData(ctx, "")
 	if err != nil {
-		return nil, fmt.Errorf("failed to retrieve zettel: %w", err)
+		return nil, fmt.Errorf("failed to retrieve zettel list: %w", err)
 	}
 
 	zettels := make([]model.Zettel, 0, len(results))
@@ -50,9 +50,11 @@ func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
 		}
 
 		zettels = append(zettels, model.Zettel{
-			ID:    id,
-			Title: title,
-			Tags:  strings.Fields(entry.Meta["tags"]),
+			ID:       id,
+			Title:    title,
+			Tags:     strings.Fields(entry.Meta["tags"]),
+			Created:  entry.Meta["created"],
+			Modified: entry.Meta["modified"],
 		})
 	}
 

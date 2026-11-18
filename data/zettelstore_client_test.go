@@ -3,46 +3,88 @@ package data
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
-// Test mit nachgebautem Zettelstore, braucht keinen laufenden Zettelstore (NFA-06).
+// TestGetZettel verifies that zettel IDs and titles are retrieved
+// correctly using a mock Zettelstore server (NFA-06).
 func TestGetZettel(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("20261111100000 Erster Zettel\n20261111110000 Zweiter Zettel\n20261111120000\n"))
-	}))
+	server := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path != "/z" {
+				http.NotFound(w, r)
+				return
+			}
+
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+
+			_, err := w.Write([]byte(
+				"20261111100000 First Zettel\n" +
+					"20261111110000 Second Zettel\n" +
+					"20261111120000\n",
+			))
+			if err != nil {
+				t.Errorf("failed to write response: %v", err)
+			}
+		},
+	))
 	defer server.Close()
 
-	zettel, err := NewZettelstoreClient(server.URL).GetZettel()
+	zettels, err := NewZettelstoreClient(server.URL).GetZettel()
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to retrieve zettels: %v", err)
 	}
-	if len(zettel) != 3 {
-		t.Fatalf("3 Zettel erwartet, %d erhalten", len(zettel))
+
+	if len(zettels) != 3 {
+		t.Fatalf("expected 3 zettels, got %d", len(zettels))
 	}
-	if zettel[1].Title != "Zweiter Zettel" {
-		t.Errorf("falscher Titel: %q", zettel[1].Title)
+
+	if zettels[0].ID != "20261111100000" {
+		t.Errorf("unexpected first zettel ID: %q", zettels[0].ID)
 	}
-	if zettel[2].Title != "20261111120000" {
-		t.Errorf("ohne Titel sollte die ID stehen, war: %q", zettel[2].Title)
+
+	if zettels[1].Title != "Second Zettel" {
+		t.Errorf("unexpected second zettel title: %q", zettels[1].Title)
+	}
+
+	if zettels[2].Title != "20261111120000" {
+		t.Errorf(
+			"expected ID as fallback title, got %q",
+			zettels[2].Title,
+		)
 	}
 }
 
-// Fehler, wenn kein Zettelstore erreichbar ist.
+// TestGetZettelWithoutZettelstore verifies that connection
+// errors are returned when the server is unavailable.
 func TestGetZettelWithoutZettelstore(t *testing.T) {
-	if _, err := NewZettelstoreClient("http://127.0.0.1:1").GetZettel(); err == nil {
-		t.Fatal("Fehler erwartet")
+	_, err := NewZettelstoreClient("http://127.0.0.1:1").GetZettel()
+
+	if err == nil {
+		t.Fatal("expected a connection error")
 	}
 }
 
-// Test mit dem echten Zettelstore. Wird übersprungen, wenn er nicht läuft.
+// TestRealZettelstore retrieves zettels from a running
+// Zettelstore instance and skips the test if unavailable.
 func TestRealZettelstore(t *testing.T) {
-	zettel, err := NewZettelstoreClient("http://127.0.0.1:23123").GetZettel()
+	zettels, err := NewZettelstoreClient(
+		"http://127.0.0.1:23123",
+	).GetZettel()
+
 	if err != nil {
-		t.Skip("Zettelstore läuft nicht:", err)
+		t.Skipf("Zettelstore is unavailable: %v", err)
 	}
-	t.Logf("%d Zettel geladen:", len(zettel))
-	for i, z := range zettel {
-		t.Logf("%3d. %s  %s", i+1, z.ID, z.Title)
+
+	t.Logf("Retrieved %d zettels", len(zettels))
+
+	for index, zettel := range zettels {
+		t.Logf(
+			"%3d. %s %s",
+			index+1,
+			zettel.ID,
+			strings.TrimSpace(zettel.Title),
+		)
 	}
 }

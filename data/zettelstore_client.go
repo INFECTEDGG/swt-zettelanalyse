@@ -12,78 +12,66 @@ import (
 	"t73f.de/r/zsc/client"
 )
 
-// BaseURL ist die Adresse des lokalen Zettelstores.
-const BaseURL = "http://localhost:23123"
-
-// ZettelstoreClient verwaltet den offiziellen ZSC-Client.
+// ZettelstoreClient provides read-only access to the Zettelstore.
 type ZettelstoreClient struct {
 	client *client.Client
 }
 
-// NewZettelstoreClient erstellt einen neuen ZSC-Client.
-func NewZettelstoreClient() *ZettelstoreClient {
+// NewZettelstoreClient creates a client for the given server address.
+func NewZettelstoreClient(address string) *ZettelstoreClient {
+	address = strings.TrimRight(strings.TrimSpace(address), "/")
 
-	// BaseURL in ein URL-Objekt umwandeln.
-	adresse, err := url.Parse(BaseURL)
-
+	serverURL, err := url.Parse(address)
 	if err != nil {
-		panic(fmt.Errorf("Ungültige BaseURL: %w", err))
+		panic(fmt.Errorf("invalid Zettelstore address: %w", err))
 	}
 
-	// Offiziellen Zettelstore-Client erstellen.
-	zscClient := client.NewClient(adresse)
+	// Initialize the official ZSC client.
+	zscClient := client.NewClient(serverURL)
 
 	return &ZettelstoreClient{
 		client: zscClient,
 	}
 }
 
-// GetZettel ruft alle Zettel über die offizielle API ab.
+// GetZettel retrieves all zettel IDs and titles.
 func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
-
-	// Timeout für die Anfrage festlegen.
 	ctx, cancel := context.WithTimeout(
 		context.Background(),
 		10*time.Second,
 	)
 	defer cancel()
 
-	// Alle Zettel über ZSC abfragen.
-	ergebnis, err := c.client.QueryZettel(ctx, "")
-
+	// Retrieve zettel using the official ZSC client.
+	results, err := c.client.QueryZettel(ctx, "")
 	if err != nil {
-		return nil, fmt.Errorf(
-			"Zettel konnten nicht geladen werden: %w",
-			err,
-		)
+		return nil, fmt.Errorf("failed to retrieve zettel: %w", err)
 	}
 
-	var zettel []model.Zettel
+	var zettels []model.Zettel
 
-	// Ergebnis in unser eigenes Datenmodell umwandeln.
-	for _, eintrag := range ergebnis {
+	// Convert the API response into application models.
+	for _, entry := range results {
+		line := strings.TrimSpace(string(entry))
 
-		zeile := strings.TrimSpace(string(eintrag))
-
-		if zeile == "" {
+		if line == "" {
 			continue
 		}
 
-		// Format: ID + Leerzeichen + Titel
-		parts := strings.SplitN(zeile, " ", 2)
+		parts := strings.SplitN(line, " ", 2)
 
 		id := parts[0]
-		titel := id
+		title := id
 
 		if len(parts) == 2 {
-			titel = strings.TrimSpace(parts[1])
+			title = strings.TrimSpace(parts[1])
 		}
 
-		zettel = append(zettel, model.Zettel{
+		zettels = append(zettels, model.Zettel{
 			ID:    id,
-			Title: titel,
+			Title: title,
 		})
 	}
 
-	return zettel, nil
+	return zettels, nil
 }

@@ -2,22 +2,22 @@ package application
 
 import "Zettelanalyse/model"
 
-func ZettelImMonat(zettel []model.Zettel, monat string) []model.Zettel {
-	ergebnis := []model.Zettel{}
+func sumZettelMonth(zettel []model.Zettel, month string) []model.Zettel {
+	result := []model.Zettel{}
 	for _, z := range zettel {
 
-		zeitpunkt := z.Created
-		if zeitpunkt == "" {
-			zeitpunkt = z.ID
+		timestamp := z.Published
+		if timestamp == "" {
+			timestamp = z.ID
 		}
 
-		if len(zeitpunkt) < 6 {
+		if len(timestamp) < 6 {
 			continue
 		}
 
-		if zeitpunkt[0:6] == monat {
-			ergebnis = append(ergebnis, z)
+		if timestamp[0:6] == month {
+			result = append(result, z)
 		}
 	}
-	return ergebnis
+	return result
 }

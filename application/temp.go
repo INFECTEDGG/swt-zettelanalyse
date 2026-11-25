@@ -12,10 +12,7 @@ func Wtemp(q []model.Zettel) {
 	var latest *model.Zettel
 	var latestDate string
 	for i := range q {
-		date := q[i].Modified
-		if date == "" {
-			date = q[i].Created
-		}
+		date := q[i].Published
 		if date == "" {
 			continue
 		}
@@ -31,7 +28,7 @@ func Wtemp(q []model.Zettel) {
 	}
 
 	path := filepath.Join(os.TempDir(), "zettelanalyse_last.txt")
-	err := os.WriteFile(path, []byte(latest.Modified), 0644)
+	err := os.WriteFile(path, []byte(latest.Published), 0644)
 
 	print(err)
 }

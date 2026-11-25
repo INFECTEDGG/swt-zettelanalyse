@@ -39,13 +39,13 @@ func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Datum aus der Temp-Datei lesen und als "created>" an die Query hängen
+	// Datum aus der Temp-Datei lesen und als "published>" an die Query hängen
 	query := ""
 	files, _ := filepath.Glob(filepath.Join(os.TempDir(), "zettelanalyse*"))
 	for _, file := range files {
 		content, err := os.ReadFile(file)
 		if err == nil && len(content) > 0 {
-			query = "created>" + strings.TrimSpace(string(content)) + " OR " + "modified>" + strings.TrimSpace(string(content))
+			query = "published>" + strings.TrimSpace(string(content))
 		}
 	}
 	_, _, results, err := c.client.QueryZettelData(ctx, query)
@@ -62,11 +62,12 @@ func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
 		}
 
 		zettels = append(zettels, model.Zettel{
-			ID:       id,
-			Title:    title,
-			Tags:     strings.Fields(entry.Meta["tags"]),
-			Created:  entry.Meta["created"],
-			Modified: entry.Meta["modified"],
+			ID:        id,
+			Title:     title,
+			Tags:      strings.Fields(entry.Meta["tags"]),
+			Created:   entry.Meta["created"],
+			Modified:  entry.Meta["modified"],
+			Published: entry.Meta["published"],
 		})
 	}
 

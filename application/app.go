@@ -9,18 +9,18 @@ type ZettelQuelle interface {
 
 // LadeZettel holt alle Zettel aus der Quelle und entfernt die Systemzettel.
 func LadeZettel(q ZettelQuelle) ([]model.Zettel, error) {
-	alle, err := q.GetZettel()
+	all, err := q.GetZettel()
 	if err != nil {
 		return nil, err
 	}
-	var ergebnis []model.Zettel
-	for _, z := range alle {
+	var result []model.Zettel
+	for _, z := range all {
 		if !IstSystemzettel(z.ID) {
-			ergebnis = append(ergebnis, z)
+			result = append(result, z)
 		}
 	}
-	Wtemp(ergebnis)
-	return ergebnis, nil
+	Wtemp(result)
+	return result, nil
 }
 
 // Systemzettel und Handbuch haben IDs mit 0000..., die Startseite 00010000000000.

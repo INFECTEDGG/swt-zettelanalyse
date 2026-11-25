@@ -11,7 +11,7 @@ import (
 func ZettelInMonth(zettel []model.Zettel, year int, month int) []model.Zettel {
 	var result []model.Zettel
 	for _, z := range zettel {
-		timestamp := z.Created
+		timestamp := z.Published
 		if timestamp == "" {
 			timestamp = z.ID // Fallback auf die ID, falls Created leer ist
 		}

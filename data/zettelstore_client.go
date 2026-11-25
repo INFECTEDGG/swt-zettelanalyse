@@ -41,11 +41,11 @@ func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
 
 	// Datum aus der Temp-Datei lesen und als "created>" an die Query hängen
 	query := ""
-	dateien, _ := filepath.Glob(filepath.Join(os.TempDir(), "zettelanalyse*"))
-	for _, datei := range dateien {
-		inhalt, err := os.ReadFile(datei)
-		if err == nil && len(inhalt) > 0 {
-			query = "created>" + strings.TrimSpace(string(inhalt))
+	files, _ := filepath.Glob(filepath.Join(os.TempDir(), "zettelanalyse*"))
+	for _, file := range files {
+		content, err := os.ReadFile(file)
+		if err == nil && len(content) > 0 {
+			query = "created>" + strings.TrimSpace(string(content)) + " OR " + "modified>" + strings.TrimSpace(string(content))
 		}
 	}
 	_, _, results, err := c.client.QueryZettelData(ctx, query)

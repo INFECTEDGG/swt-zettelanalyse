@@ -32,3 +32,7 @@ func Wtemp(q []model.Zettel) {
 
 	print(err)
 }
+
+func loadTemp(q []model.Zettel) {
+
+}

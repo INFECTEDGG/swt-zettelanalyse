@@ -45,7 +45,7 @@ func (c *ZettelstoreClient) GetZettel() ([]model.Zettel, error) {
 	for _, file := range files {
 		content, err := os.ReadFile(file)
 		if err == nil && len(content) > 0 {
-			query = "published>" + strings.TrimSpace(string(content))
+			//query = "published>" + strings.TrimSpace(string(content))
 		}
 	}
 	_, _, results, err := c.client.QueryZettelData(ctx, query)
